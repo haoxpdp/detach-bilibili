@@ -10,6 +10,23 @@ var startPage = 1;
 var isOpen = false;
 var data = [];
 
+// js将数字转换成万 并且保留两位小数
+const keepTwoDecimalFull = (num) => {
+    if (num > 10000) {
+        let result = num / 10000;
+        result = Math.floor(result * 100) / 100;
+        var s_x = result.toString();
+        var pos_decimal = s_x.indexOf('.');
+        if (pos_decimal < 0) {
+            pos_decimal = s_x.length;
+            s_x += '.';
+        }
+        s_x += '万';
+    } else {
+        s_x = num;
+    }
+    return s_x
+}
 
 function getCookie(name) {
     var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
@@ -32,18 +49,20 @@ while (!showMaster) {
     showMaster = uuid != undefined && uuid.length > 0;
 }
 
-
+var isOnRoomList;
 $(document).ready(function() {
     createLeftFlex();
     appendNavContainer();
-
     getRoom(startPage, initPageSize)
-
-    $("a#plugin-master").hover(
-        function(e) { console.log(data) },
-        function(e) { console.log(data) }
+    $("#menu-wrap").hide();
+    $("#menu-wrap").hover(function() {}, function() {
+        $("#menu-wrap").hide();
+    })
+    $("#plugin-master").hover(
+        function(e) { $("#menu-wrap").fadeIn(); },
+        function(e) { if (!isOnRoomList) {} }
     )
-    $("a#plugin-master").click(function(e) {
+    $("#show-more").click(function(e) {
         getRoom(startPage, initPageSize);
     })
 
@@ -73,8 +92,8 @@ function getRoom(pageNum, pageSize) {
 
             tmpData.forEach(element => {
                 data.push(element);
+                creatRank(element)
             });
-            console.log(data.length + ":" + totalSize)
             if (data.length < totalSize) {
                 startPage += 1;
             }
@@ -110,24 +129,26 @@ function createLeftFlex() {
         'line-height: 14px;' +
         'writing-mode: vertical-lr;' +
         '" >master</a> '
-    console.log(div)
     $("body").append(div);
 }
 
 function appendNavContainer() {
     var menu =
-        '<div class="menu-wrap">' +
-        '<button class="close-button" id="close-button">Close Menu</button>' +
-        '<nav class="menu">' +
-        '<div class="icon-list">' +
-        '<a href="#"><i class="fa fa-fw fa-bell-o"></i><span>Alerts</span></a>' +
+        '<div id="menu-wrap">' +
+        '<div id="reset-room">刷新</div>' +
+        '<div class="room-list">' +
         '</div>' +
-        '</nav>' +
-        '<div class="morph-shape" id="morph-shape" data-morph-open="M-7.312,0H15c0,0,66,113.339,66,399.5C81,664.006,15,800,15,800H-7.312V0z;M-7.312,0H100c0,0,0,113.839,0,400c0,264.506,0,400,0,400H-7.312V0z">' +
-        '<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">' +
-        '<path d="M-7.312,0H0c0,0,0,113.839,0,400c0,264.506,0,400,0,400h-7.312V0z"/>' +
-        '</svg>' +
-        '</div>' +
+        '<div id="show-more">显示更多</div>' +
         '</div>';
     $("body").append(menu);
+}
+
+function creatRank(ele) {
+    var div = '<div class="live-rank">' +
+        '<a href="' + ele.link + '" target="_blank" class="live-rank-item"><div class="rank-face">' +
+        '<!----><img src="' + ele.cover + '@55w_55h_1c_100q.webp" alt="">' +
+        '<div class="txt"><p>' + ele.uname + '</p><p class="p2">' + ele.title + '</p></div></div>' +
+        '<div class="count"><i class="bilifont bili-icon_xinxi_renqi"></i>' + keepTwoDecimalFull(ele.online) + '</div></a>' +
+        '</div>'
+    $(".room-list").append(div)
 }

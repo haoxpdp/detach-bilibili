@@ -1,0 +1,35 @@
+#menu-wrap {
+    width: 340px;
+    height: 100%;
+    background: white;
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+}
+
+.room-list {
+    margin-top: 50px;
+    margin-bottom: 200px;
+    overflow: auto;
+    height: 80%;
+}
+
+#menu-wrap .live-rank {
+    padding: 0px 20px;
+}
+
+#show-more {
+    text-align: center;
+    cursor: pointer;
+    padding: 10px 20px;
+    width: 100%;
+    position: absolute;
+    bottom: 7%;
+    left: 0;
+}
+
+#show-more:hover {
+    color: #00a1d6
+}
