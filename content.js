@@ -56,7 +56,7 @@ $(document).ready(function() {
     getRoom(startPage, initPageSize)
     $("#menu-wrap").hide();
     $("#menu-wrap").hover(function() {}, function() {
-        // $("#menu-wrap").hide();
+        $("#menu-wrap").fadeOut();
     })
     $("#plugin-master").hover(
         function(e) { $("#menu-wrap").fadeIn(); },
