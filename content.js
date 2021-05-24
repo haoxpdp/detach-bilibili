@@ -56,13 +56,20 @@ $(document).ready(function() {
     getRoom(startPage, initPageSize)
     $("#menu-wrap").hide();
     $("#menu-wrap").hover(function() {}, function() {
-        $("#menu-wrap").hide();
+        // $("#menu-wrap").hide();
     })
     $("#plugin-master").hover(
         function(e) { $("#menu-wrap").fadeIn(); },
         function(e) { if (!isOnRoomList) {} }
     )
     $("#show-more").click(function(e) {
+        getRoom(startPage, initPageSize);
+    })
+
+    $("#reset-room").click(function(e) {
+        data = [];
+        startPage = 1;
+        $(".room-list").html("");
         getRoom(startPage, initPageSize);
     })
 
@@ -128,14 +135,19 @@ function createLeftFlex() {
         'padding: 8px 7px;' +
         'line-height: 14px;' +
         'writing-mode: vertical-lr;' +
-        '" >master</a> '
+        '" >master</a> ' +
+        // '<div id="bili-search">\n' +
+        // '<div class="bili-search-area">\n' +
+        // '  <input id="bili-search-Input" type="text" autocomplete="off">\n' +
+        // '</div>\n' +
+        '<ul style=""></ul>'
     $("body").append(div);
 }
 
 function appendNavContainer() {
     var menu =
         '<div id="menu-wrap">' +
-        '<div id="reset-room">刷新</div>' +
+        '<div id="reset-room" class="change-btn"><i class="bilifont bili-icon_caozuo_huanyihuan"></i></div>' +
         '<div class="room-list">' +
         '</div>' +
         '<div id="show-more">显示更多</div>' +
