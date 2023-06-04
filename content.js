@@ -55,9 +55,9 @@ $(document).ready(function() {
     createLeftFlex();
     appendNavContainer();
     getRoom(startPage, initPageSize)
-    // $("#menu-wrap").hide();
+    $("#menu-wrap").hide();
     $("#menu-wrap").hover(function() {}, function() {
-        // $("#menu-wrap").fadeOut();
+        $("#menu-wrap").fadeOut();
     })
     $("#plugin-master").hover(
         function(e) { $("#menu-wrap").fadeIn(); },
