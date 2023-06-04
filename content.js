@@ -9,6 +9,7 @@ var initPageSize = 10;
 var startPage = 1;
 var isOpen = false;
 var data = [];
+var totalCnt = -1;
 
 // js将数字转换成万 并且保留两位小数
 const keepTwoDecimalFull = (num) => {
@@ -54,9 +55,9 @@ $(document).ready(function() {
     createLeftFlex();
     appendNavContainer();
     getRoom(startPage, initPageSize)
-    $("#menu-wrap").hide();
+    // $("#menu-wrap").hide();
     $("#menu-wrap").hover(function() {}, function() {
-        $("#menu-wrap").fadeOut();
+        // $("#menu-wrap").fadeOut();
     })
     $("#plugin-master").hover(
         function(e) { $("#menu-wrap").fadeIn(); },
@@ -73,6 +74,28 @@ $(document).ready(function() {
         getRoom(startPage, initPageSize);
     })
 
+    var div = $(".room-list"); // 获取目标div元素
+
+    $(".room-list").scroll(_.throttle(function() {
+        console.log(this.scrollTop + this.offsetHeight);
+        console.log(this.scrollHeight);
+        console.log(this.scrollHeight - (this.scrollTop+this.offsetHeight));
+        console.log("----------------")
+        if(this.scrollHeight - (this.scrollTop+this.offsetHeight)<100){
+            console.log("执行")
+            if(totalCnt!=-1 && totalCnt == data.length){
+                console.log("到底了")
+                $('#scroll-tip').fadeIn(500, function(){
+                    setTimeout(function(){
+                            $('#scroll-tip').fadeOut(500);
+                    }, 2000);
+                });
+            }else{
+                getRoom(startPage, initPageSize);
+            }
+        }
+    }, 100)); // 500ms为延迟时间，可以根据实际需要进行调整
+
 });
 
 
@@ -82,31 +105,34 @@ function getRoom(pageNum, pageSize) {
     var tmpData = [];
     var totalSize;
 
-    $.ajax({
-        type: "get",
-        url: feedUrl,
-        headers: {
-            "cookie": "_uuid=" + uuid
-        },
-        success: function(response) {
-            console.log(response)
-            tmpData = response.data.list;
-            totalSize = response.data.results;
-            console.log(totalSize)
-            if (data.length >= totalSize) {
-                return;
+   $.ajax({
+            type: "get",
+            url: feedUrl,
+            headers: {
+                "cookie": "_uuid=" + uuid
+            },
+            success: function(response) {
+                tmpData = response.data.list;
+                totalSize = response.data.results;
+                if (data.length >= totalSize) {
+                    return;
+                }
+                
+                tmpData.forEach(element => {
+                    data.push(element);
+                    creatRank(element)
+                });
+                if (data.length < totalSize) {
+                    startPage += 1;
+                }
+                if(totalCnt == -1){
+                    totalCnt = totalSize;
+                }
             }
+        });
 
-            tmpData.forEach(element => {
-                data.push(element);
-                creatRank(element)
-            });
-            if (data.length < totalSize) {
-                startPage += 1;
-            }
-        }
-    });
 }
+
 
 function sleep(delay) {
     var start = (new Date()).getTime();
@@ -149,31 +175,27 @@ function appendNavContainer() {
         '<div id="menu-wrap">' +
         '<div id="reset-room" class="change-btn"><i class="bilifont bili-icon_caozuo_huanyihuan"></i></div>' +
         '<div class="room-list">' +
-        '</div>' +
-        '<div id="show-more">显示更多</div>' +
+        '<div id="scroll-tip" style="display:none; position:fixed; top:50%; left:140px; transform: translate(-50%,-50%); z-index:1500; width:200px; height:80px; background-color:#fff; border-radius:5px; text-align:center; padding-top:20px; box-shadow:0 2px 4px rgba(0,0,0,0.2);">'+
+            '到底了'+
+        '</div>'+
         '</div>';
     $("body").append(menu);
 }
 
 function creatRank(ele) {
-    console.log(ele)
-    // var div = '<div class="live-rank">' +
-    //     '<a href="' + ele.link + '" target="_blank" class="live-rank-item"><div class="rank-face">' +
-    //     '<!----><img src="' + ele.cover + '@55w_55h_1c_100q.webp" alt="">' +
-    //     '<div class="txt"><p>' + ele.uname + '</p><p class="p2">' + ele.title + '</p></div></div>' +
-    //     '<div class="count"><i class="bilifont bili-icon_xinxi_renqi"></i>' + keepTwoDecimalFull(ele.online) + '</div></a>' +
-    //     '</div>'
         
     $(".room-list").append(createLiveRoomDiv(ele));
 }
 
 function createLiveRoomDiv(ele) {
   var liveRoomDiv = '<a target="_blank" href ="'+ele.link+'"><div class="live-room" style="box-shadow: 1px 1px 3px #ccc; margin: 5px;margin-left:10%; padding: 15px; height: 80px; max-width: 80%;">';
-  liveRoomDiv += '<img src="' + ele.cover + '" class="cover" style="max-width: 30%; height: auto;">';
-  liveRoomDiv += '<div class="info" style="margin-left: 5px; width: 70%;padding-left:15%;padding-right:15%">';
-  liveRoomDiv += '<h4 class="title" style="font-size: 12px; margin: 0 0 2px; font-weight: normal; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; text-align: right;"><img width="12" height="12" src="https://s1.hdslb.com/bfs/static/jinkela/long/images/live.gif" data-v-0ea4a50e="">' + ele.title + '</h4>'; // 修改代码：添加 text-align: right;
-  liveRoomDiv += '<p class="uname" style="font-size: 10px; margin: 0 0 3px; color: #666; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; text-align: right;">' + ele.uname + '</p>'; // 修改代码：添加 text-align: right;
-  liveRoomDiv += '<p class="online" style="font-size: 9px; margin: 0; color: #999; text-align: right;"></i> ' +keepTwoDecimalFull( ele.online )+ '</p>'; // 修改代码：添加 text-align: right;
+  liveRoomDiv += '<div class="cover-wrap" style="position: relative; display: inline-block; width: 30%; height: 100%; border-right: 1px dashed #ccc; padding-right: 10px; margin-right: 10px;">'; // 添加代码：添加封面容器，设置边框样式和内外边距
+  liveRoomDiv += '<img src="' + ele.cover + '" class="cover" style="max-width: 100%; height: auto;">';
+  liveRoomDiv += '</div>';
+  liveRoomDiv += '<div class="info" style="display: inline-block; width: 60%;">'; // 修改代码：改为 inline-block 格式化
+  liveRoomDiv += '<h4 class="title" style="font-size: 12px; margin: 0 0 2px; font-weight: normal; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;"><img width="12" height="12" src="https://s1.hdslb.com/bfs/static/jinkela/long/images/live.gif" data-v-0ea4a50e="">' + ele.title + '</h4>'; // 修改代码：去掉 text-align: right
+  liveRoomDiv += '<p class="uname" style="font-size: 10px; margin: 0 0 3px; color: #666; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">' + ele.uname + '</p>';
+  liveRoomDiv += '<p class="online" style="font-size: 9px; margin: 0; color: #999;"><i class="fas fa-eye"></i> ' + keepTwoDecimalFull(ele.online) + '</p>';
   liveRoomDiv += '</div>';
   liveRoomDiv += '</div></a>';
   return liveRoomDiv;

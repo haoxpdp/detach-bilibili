@@ -130,3 +130,23 @@
 .fa-eye {
     margin-right: 5px;
 }
+
+#float-div {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    /* 可以根据需求进行修改前面说的"小一些" */
+    height: 50px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 2s ease-out;
+    text-align: center;
+    /* 居中显示 */
+    line-height: 50px;
+    /* 等于 div 高度，保证文本垂直居中显示 */
+}
