@@ -168,12 +168,12 @@ function creatRank(ele) {
 }
 
 function createLiveRoomDiv(ele) {
-  var liveRoomDiv = '<a target="_blank" href ="'+ele.link+'"><div class="live-room" style="box-shadow: 1px 1px 3px #ccc; margin: 5px; padding: 15px; height: 80px; max-width: 70%;">';
+  var liveRoomDiv = '<a target="_blank" href ="'+ele.link+'"><div class="live-room" style="box-shadow: 1px 1px 3px #ccc; margin: 5px;margin-left:10%; padding: 15px; height: 80px; max-width: 80%;">';
   liveRoomDiv += '<img src="' + ele.cover + '" class="cover" style="max-width: 30%; height: auto;">';
   liveRoomDiv += '<div class="info" style="margin-left: 5px; width: 70%;padding-left:15%;padding-right:15%">';
-  liveRoomDiv += '<h4 class="title" style="font-size: 12px; margin: 0 0 2px; font-weight: normal; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; text-align: right;">' + ele.title + '</h4>'; // 修改代码：添加 text-align: right;
+  liveRoomDiv += '<h4 class="title" style="font-size: 12px; margin: 0 0 2px; font-weight: normal; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; text-align: right;"><img width="12" height="12" src="https://s1.hdslb.com/bfs/static/jinkela/long/images/live.gif" data-v-0ea4a50e="">' + ele.title + '</h4>'; // 修改代码：添加 text-align: right;
   liveRoomDiv += '<p class="uname" style="font-size: 10px; margin: 0 0 3px; color: #666; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; text-align: right;">' + ele.uname + '</p>'; // 修改代码：添加 text-align: right;
-  liveRoomDiv += '<p class="online" style="font-size: 9px; margin: 0; color: #999; text-align: right;"><i class="fas fa-eye"></i> ' +keepTwoDecimalFull( ele.online )+ '</p>'; // 修改代码：添加 text-align: right;
+  liveRoomDiv += '<p class="online" style="font-size: 9px; margin: 0; color: #999; text-align: right;"></i> ' +keepTwoDecimalFull( ele.online )+ '</p>'; // 修改代码：添加 text-align: right;
   liveRoomDiv += '</div>';
   liveRoomDiv += '</div></a>';
   return liveRoomDiv;
