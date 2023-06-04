@@ -156,11 +156,27 @@ function appendNavContainer() {
 }
 
 function creatRank(ele) {
-    var div = '<div class="live-rank">' +
-        '<a href="' + ele.link + '" target="_blank" class="live-rank-item"><div class="rank-face">' +
-        '<!----><img src="' + ele.cover + '@55w_55h_1c_100q.webp" alt="">' +
-        '<div class="txt"><p>' + ele.uname + '</p><p class="p2">' + ele.title + '</p></div></div>' +
-        '<div class="count"><i class="bilifont bili-icon_xinxi_renqi"></i>' + keepTwoDecimalFull(ele.online) + '</div></a>' +
-        '</div>'
-    $(".room-list").append(div)
+    console.log(ele)
+    // var div = '<div class="live-rank">' +
+    //     '<a href="' + ele.link + '" target="_blank" class="live-rank-item"><div class="rank-face">' +
+    //     '<!----><img src="' + ele.cover + '@55w_55h_1c_100q.webp" alt="">' +
+    //     '<div class="txt"><p>' + ele.uname + '</p><p class="p2">' + ele.title + '</p></div></div>' +
+    //     '<div class="count"><i class="bilifont bili-icon_xinxi_renqi"></i>' + keepTwoDecimalFull(ele.online) + '</div></a>' +
+    //     '</div>'
+        
+    $(".room-list").append(createLiveRoomDiv(ele));
 }
+
+function createLiveRoomDiv(ele) {
+  var liveRoomDiv = '<a target="_blank" href ="'+ele.link+'"><div class="live-room" style="box-shadow: 1px 1px 3px #ccc; margin: 5px; padding: 15px; height: 80px; max-width: 70%;">';
+  liveRoomDiv += '<img src="' + ele.cover + '" class="cover" style="max-width: 30%; height: auto;">';
+  liveRoomDiv += '<div class="info" style="margin-left: 5px; width: 70%;padding-left:15%;padding-right:15%">';
+  liveRoomDiv += '<h4 class="title" style="font-size: 12px; margin: 0 0 2px; font-weight: normal; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; text-align: right;">' + ele.title + '</h4>'; // 修改代码：添加 text-align: right;
+  liveRoomDiv += '<p class="uname" style="font-size: 10px; margin: 0 0 3px; color: #666; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; text-align: right;">' + ele.uname + '</p>'; // 修改代码：添加 text-align: right;
+  liveRoomDiv += '<p class="online" style="font-size: 9px; margin: 0; color: #999; text-align: right;"><i class="fas fa-eye"></i> ' +keepTwoDecimalFull( ele.online )+ '</p>'; // 修改代码：添加 text-align: right;
+  liveRoomDiv += '</div>';
+  liveRoomDiv += '</div></a>';
+  return liveRoomDiv;
+}
+
+

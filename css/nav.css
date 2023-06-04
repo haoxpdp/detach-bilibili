@@ -1,5 +1,5 @@
 #menu-wrap {
-    width: 340px;
+    width: 280px;
     height: 100%;
     background: white;
     display: block;
@@ -92,4 +92,41 @@
 #reset-room i:hover {
     color: gray;
     transform: rotate(720deg);
+}
+.live-room {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.cover {
+    margin-right: 10px;
+}
+
+.info {
+    flex: 1;
+}
+
+.title {
+    font-size: 14px;
+    margin: 0 0 3px;
+    font-weight: normal;
+}
+
+.uname {
+    font-size: 12px;
+    margin: 0 0 3px;
+    color: #666;
+}
+
+.online {
+    font-size: 10px;
+    margin: 0;
+    color: #999;
+}
+
+.fa-eye {
+    margin-right: 5px;
 }
